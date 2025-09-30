@@ -1,36 +1,204 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧪 Next.js + AntD Student Exercise
 
-## Getting Started
+This lab introduces **Next.js App Router**, **Ant Design (AntD)**, and **basic navigation** with `next/link`.
 
-First, run the development server:
+You will complete the TODOs inside:
+- `app/layout.tsx`
+- `app/page.tsx` (Home page)
+- `app/about/page.tsx` (About page)
+- `.env.local`
+
+After filling the TODOs, run:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# open http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🗂 Files with TODOs
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1) `app/layout.tsx`
 
-## Learn More
+```tsx
+// TODO(1): import AntD reset css
 
-To learn more about Next.js, take a look at the following resources:
+import type { Metadata } from 'next';
+import React from 'react';
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+export const metadata: Metadata = {
+  title: 'Student Exercise',
+  description: 'Next.js + AntD Exercise',
+};
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        {/* TODO(2): add a header with links to Home and About (use <Link>) */}
+        {children}
+      </body>
+    </html>
+  );
+}
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 2) `app/page.tsx` (Home)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```tsx
+'use client';
+
+import { useState } from 'react';
+import { Button, Input, Typography } from 'antd';
+const { Title } = Typography;
+
+// TODO(3): read API base from env (ONE LINE, fallback to PokeAPI)
+
+export default function HomePage() {
+  // TODO(4): add search state (useState)
+
+  const handleClick = () => {
+    // TODO(5): console.log the API URL using the search term
+  };
+
+  return (
+    <div style={{ padding: 24 }}>
+      {/* TODO(6): Add Title element */}
+      {/* TODO(7): Add Input bound to state */}
+      {/* TODO(8): Add Button that calls handleClick */}
+    </div>
+  );
+}
+```
+
+---
+
+### 3) `app/about/page.tsx`
+
+```tsx
+import { Typography } from 'antd';
+import Link from 'next/link';
+const { Title } = Typography;
+
+export default function AboutPage() {
+  return (
+    <div style={{ padding: 24 }}>
+      {/* TODO(9): Add Title “About This Demo” */}
+      {/* TODO(10): Add text explaining this page */}
+      {/* TODO(11): Add Link back to Home */}
+    </div>
+  );
+}
+```
+
+---
+
+### 4) `.env.local`
+
+```env
+# TODO(12): set NEXT_PUBLIC_API_BASE to pokeapi
+NEXT_PUBLIC_API_BASE=https://pokeapi.co/api/v2
+```
+
+---
+
+## ✅ Answers & Explanations 
+
+### TODO(1) — AntD CSS
+```ts
+import 'antd/dist/reset.css';
+```
+Loads AntD global styles so components look correct. In App Router, global CSS imports live in a `layout.tsx` (Server Component).
+
+### TODO(2) — Global nav with `next/link`
+```tsx
+import Link from 'next/link';
+
+<header style={{ margin: '16px 0' }}>
+  <nav style={{ display: 'flex', gap: 12 }}>
+    <Link href="/">Home</Link>
+    <Link href="/about">About</Link>
+  </nav>
+</header>
+```
+`Link` enables client-side navigation (prefetching) for snappy route changes. Putting this in the layout makes it appear on every page.
+
+---
+
+### TODO(3) — Env base for API
+```ts
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'https://pokeapi.co/api/v2';
+```
+Client Components can only see env vars starting with `NEXT_PUBLIC_`. We add a fallback for reliability.
+
+### TODO(4) — Search state
+```ts
+const [search, setSearch] = useState('');
+```
+A controlled input will bind to this state.
+
+### TODO(5) — Build URL with search term
+```ts
+console.log(`${API_BASE}/pokemon/${search}`);
+```
+Shows how to combine env + state to form an endpoint.
+
+### TODO(6) — Title
+```tsx
+<Title level={3}>Home Page</Title>
+```
+Uses AntD typography for a consistent heading.
+
+### TODO(7) — Input
+```tsx
+<Input
+  placeholder="Search Pokémon"
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  style={{ width: 220, marginRight: 8 }}
+/>
+```
+Controlled input updates `search` as you type.
+
+### TODO(8) — Button
+```tsx
+<Button type="primary" onClick={handleClick}>Search</Button>
+```
+Calls your function to demonstrate building URLs / making requests.
+
+---
+
+### TODO(9–11) — About page content & link
+```tsx
+<Title level={3}>About This Demo</Title>
+<p>This page exists to practice Next.js routing using the App Router.</p>
+<Link href="/">← Back to Home</Link>
+```
+Shows another route and a navigation link back.
+
+---
+
+### TODO(12) — `.env.local` value
+```env
+NEXT_PUBLIC_API_BASE=https://pokeapi.co/api/v2
+```
+Client code can access only `NEXT_PUBLIC_*` vars. Restart `npm run dev` after changing `.env.local` so Next rebuilds with new values.
+
+---
+
+## 🧭 What to check when done
+- Header links work (Home ↔ About).
+- Typing in Home updates the input; clicking **Search** logs a URL using your input.
+- Changing `.env.local` and restarting dev server changes the logged base URL.
+
+---
+
+## 🧠 Next.js concepts reinforced
+- **Layouts** wrap every page (global elements live here).
+- **App Router** auto-routes folders under `app/` (`/about` from `app/about/page.tsx`).
+- **Client vs Server**: `'use client'` enables hooks & browser events.
+- **`next/link`**: fast client-side navigation.
+- **Env vars**: `NEXT_PUBLIC_*` for client; server secrets stay unprefixed.
