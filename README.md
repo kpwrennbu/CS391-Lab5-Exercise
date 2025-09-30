@@ -140,19 +140,33 @@ const [search, setSearch] = useState('');
 ```
 A controlled input will bind to this state.
 
-### TODO(5) — Build URL with search term
+### TODO(5) — Add image state
 ```ts
-console.log(`${API_BASE}/pokemon/${search}`);
+  const [imageSrc, setImageSrc] = useState('');
 ```
-Shows how to combine env + state to form an endpoint.
+Sets up state to hold the image Src for the pokemon
 
-### TODO(6) — Title
+### TODO(6) — Setting Image state
+```tsx
+try {
+      const res = await fetch(`${API_BASE}/pokemon/${search.toLowerCase()}`);
+      const data = await res.json();
+      setImageSrc(data.sprites.front_default);
+    } catch (error) {
+      console.error('Error fetching Pokémon:', error);
+      setImageSrc('');
+    }
+```
+Sets image src according and catches error if necessary
+
+
+### TODO(7) — Title
 ```tsx
 <Title level={3}>Home Page</Title>
 ```
 Uses AntD typography for a consistent heading.
 
-### TODO(7) — Input
+### TODO(8) — Input
 ```tsx
 <Input
   placeholder="Search Pokémon"
@@ -163,7 +177,7 @@ Uses AntD typography for a consistent heading.
 ```
 Controlled input updates `search` as you type.
 
-### TODO(8) — Button
+### TODO(9) — Button
 ```tsx
 <Button type="primary" onClick={handleClick}>Search</Button>
 ```
@@ -171,7 +185,7 @@ Calls your function to demonstrate building URLs / making requests.
 
 ---
 
-### TODO(9–11) — About page content & link
+### TODO(10–12) — About page content & link
 ```tsx
 <Title level={3}>About This Demo</Title>
 <p>This page exists to practice Next.js routing using the App Router.</p>
@@ -181,7 +195,7 @@ Shows another route and a navigation link back.
 
 ---
 
-### TODO(12) — `.env.local` value
+### TODO(13) — `.env.local` value
 ```env
 NEXT_PUBLIC_API_BASE=https://pokeapi.co/api/v2
 ```

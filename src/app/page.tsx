@@ -29,10 +29,10 @@ export default function HomePage() {
 
   return (
     <div style={{ padding: 24 }}>
-      {/* TODO(6): Add Title element */}
+      {/* TODO(7): Add Title element */}
       <Title level={3}>Home Page</Title>
 
-      {/* TODO(7): Add Input bound to state */}
+      {/* TODO(8): Add Input bound to state */}
       <Input
         placeholder="Search Pokémon"
         value={search}
@@ -40,9 +40,10 @@ export default function HomePage() {
         style={{ width: 220, marginRight: 8 }}
       />
 
-      {/* TODO(8): Add Button that calls handleClick */}
+      {/* TODO(9): Add Button that calls handleClick */}
       <Button type="primary" onClick={handleClick}>Search</Button>
 
+      {/* Don't touch this below */}
       {imageSrc && (
         <div style={{ marginTop: 16 }}>
           <Image
